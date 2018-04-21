@@ -1,64 +1,35 @@
 import java.util.HashMap;
-import java.io.FileInputStream;
-import java.util.Scanner;
+import java.util.Map;
+import java.io.*;
 
 
 public class LogProcessor {
 
-        public static void main(String[] args)
-        {
-           try{
-               FileInputStream fin = new FileInputStream("/Users/amankumbare/Desktop/auto.txt");
+    public static void main(String[] args) {
+        File f1 = new File("/Users/amankumbare/Desktop/errortg.csv");
+        File f2 = new File("/Users/amankumbare/Desktop/exceptiontg.csv");
+        File f3 = new File("/Users/amankumbare/Desktop/causedbytg.csv");
 
-               // Using delimiter to separate the fileds
-               Scanner sc = new Scanner(fin).useDelimiter(",");
-               String splits = null;
+        Map m1 = new HashMap();
+        Map m2 = new HashMap();
+        Map m3 = new HashMap();
 
-               while(sc.hasNext()){
+        System.out.println(f1);
 
+        Errorhandler e1 = new Errorhandler();
+        e1.process(m1, f1);
+        System.out.println(m1);
 
-                    //Replacing "
-                   splits = sc.next().replaceAll("\"", "") ;
+        Exceptionhandler e2 = new Exceptionhandler();
+        e2.process(m2, f2);
+        System.out.println(m2);
 
-
-                   // Print value of splits
-                   //System.out.println(splits);
-
-                  String[] parts = splits.split(":",2);
-                  if(parts.length >=2){
-                      String key = parts[0];
-                      String value = parts[1];
-
-                      HashMap hmap = new HashMap();
-                      hmap.put(key,value);
-
-                      System.out.println(hmap);
+        Causedbyhandler c1 = new Causedbyhandler();
+        c1.process(m3,f3);
+        System.out.println(m3);
 
 
-                  }else{
-                      System.out.println("ignoring line: " + splits);
-                  }
+    }
 
-
-                   }
-
-
-               /*int i = 0;
-               // Reading entire file
-               while ((i=fin.read()) != -1) {
-
-                   // Printing the contents of the file.
-                   System.out.print((char) i);
-               }
-
-               fin.close();*/
-        }
-        catch (Exception e){
-            System.out.println(e);
-           }
-
-
-        }
 }
-
 
