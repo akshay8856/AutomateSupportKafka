@@ -29,6 +29,8 @@ public class LogProcessor {
                 String[] splitlog = logstashlines.split("\\|");
                 //           System.out.println(splitlog.length);
                 if (splitlog.length < 8) {
+
+                    System.out.println(" ERROR, less than 8 fields in : " +logstashlines);
                     continue;
                 }
 
@@ -42,10 +44,16 @@ public class LogProcessor {
                 String erdl = splitlog[7];
 
 
-                LogData ld = new LogData(pl, etl, ll, ecl, edl, ccl, cdl, edl);
+                LogData ld = new LogData(pl, etl, ll, ecl, edl, ccl, cdl, erdl);
 
-                if (recommendationMap.containsKey(ld.getKey())) {
-                    recSet.add(new Tuple(recommendationMap.get(ld.getKey()), ld));
+                String key = ld.getKey();
+
+                if (recommendationMap.containsKey(key)) {
+                    recSet.add(new Tuple(recommendationMap.get(key), ld));
+
+                }else {
+                    System.out.println(ld + " Missing in DB ");
+                  //  System.out.println(ld.getKey());
 
                 }
 
@@ -58,7 +66,7 @@ public class LogProcessor {
                 for (Tuple tpl : recSet) {
                     List<Recommendation> lst = tpl.getRecList();
                     LogData ld = tpl.getLd();
-                    System.out.println(lst.size());
+  //                  System.out.println(lst.size());
                     int index = 1;
                     for (Recommendation rec : lst) {
 

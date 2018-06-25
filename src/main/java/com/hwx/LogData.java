@@ -22,13 +22,28 @@ public class LogData {
     }
 
 
-    public String getKey() {
+    @Override
+    public String toString() {
+        return   "errortime =" + errortime +
+                ", level =" + level +
+                ", exceptionclass =" + exceptionclass +
+                ", exceptiondata =" + exceptiondata  +
+                ", causedbyclass =" + causedbyclass  +
+                ", causedbydata =" + causedbydata  +
+                ", errordata =" +  errordata +
+                ", path =" + path ;
+    }
 
-        if (exceptionclass != null) {
-            return level + ":" + exceptionclass;
+    public String getKey() {
+        String key ;
+
+        if (causedbyclass != null && causedbyclass.length() != 0) {
+            key = level + ":" + causedbyclass;
         } else {
-            return level + ":" + causedbyclass;
+            key = level + ":" + exceptionclass;
         }
+        System.out.println(key);
+        return key;
     }
 
     public String getPath() {
