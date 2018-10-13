@@ -42,7 +42,6 @@ public class LogData {
         } else {
             key = level + ":" + exceptionclass;
         }
-        System.out.println(key);
         return key;
     }
 

@@ -4,9 +4,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.io.File;
+import org.apache.log4j.Logger;
+
 
 
 public class LogProcessor {
+
+    final static Logger logger = Logger.getLogger(LogProcessor.class);
 
     public static void main(String[] args) {
 
@@ -24,13 +28,14 @@ public class LogProcessor {
             while (sc.hasNextLine()) {
 
                 String logstashlines = sc.nextLine();
-                //          System.out.println(logstashlines);
+                System.out.println(logstashlines);
 
                 String[] splitlog = logstashlines.split("\\|");
-                //           System.out.println(splitlog.length);
+                           System.out.println(splitlog.length);
                 if (splitlog.length < 8) {
 
-                    System.out.println(" ERROR, less than 8 fields in : " +logstashlines);
+                    logger.error("less than 8 fields in : " + logstashlines );
+                    //System.out.println(" ERROR, less than 8 fields in : " +logstashlines);
                     continue;
                 }
 
@@ -43,17 +48,18 @@ public class LogProcessor {
                 String cdl = splitlog[6];
                 String erdl = splitlog[7];
 
-
                 LogData ld = new LogData(pl, etl, ll, ecl, edl, ccl, cdl, erdl);
 
+
                 String key = ld.getKey();
+                //System.out.println(key);
 
                 if (recommendationMap.containsKey(key)) {
                     recSet.add(new Tuple(recommendationMap.get(key), ld));
 
                 }else {
-                    System.out.println(ld + " Missing in DB ");
-                  //  System.out.println(ld.getKey());
+
+                    logger.info( "Key : " + ld.getKey() +  "log" + ld );
 
                 }
 
@@ -140,7 +146,7 @@ public class LogProcessor {
 
             }
         } catch (FileNotFoundException e) {
-            System.out.println(e);
+            logger.error(e);
         }
 
         return rmap;
